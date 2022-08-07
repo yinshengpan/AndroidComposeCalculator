@@ -1,7 +1,6 @@
 package com.example.android.calculator
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -22,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.android.calculator.ui.theme.Background
 import com.example.android.calculator.ui.theme.CalculatorTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,14 +50,16 @@ fun Calculator(viewModel: CalculatorViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(Background)
             .padding(bottom = 10.dp)
     ) {
         Text(
             text = displayContentState.value ?: "",
-            fontSize = 16.sp,
+            fontSize = 46.sp,
+            color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 25.dp)
                 .wrapContentWidth(Alignment.End)
         )
         val keyData = viewModel.getKeyData()
@@ -79,22 +81,24 @@ fun Calculator(viewModel: CalculatorViewModel = viewModel()) {
 
 @Composable
 fun KeyView(
-    keyValue: String,
+    keyValue: Pair<String, Color>,
     viewModel: CalculatorViewModel = viewModel()
 ) {
     Text(
-        text = keyValue,
+        text = keyValue.first,
+        color = Color.White,
+        fontSize = 30.sp,
         modifier = Modifier
             .clickable(
                 indication = null,
                 interactionSource = remember {
                     MutableInteractionSource()
                 }) {
-                viewModel.processKey(keyValue)
+                viewModel.processKey(keyValue.first)
             }
-            .width(50.dp)
-            .height(50.dp)
-            .background(shape = CircleShape, color = Color.Gray)
+            .width(60.dp)
+            .height(60.dp)
+            .background(shape = CircleShape, color = keyValue.second)
             .wrapContentSize(align = Alignment.Center)
     )
 }

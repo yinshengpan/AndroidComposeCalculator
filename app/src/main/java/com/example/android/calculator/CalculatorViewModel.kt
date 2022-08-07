@@ -1,11 +1,13 @@
 package com.example.android.calculator
 
-import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.android.calculator.ui.theme.DarkGray
+import com.example.android.calculator.ui.theme.LightGray
+import com.example.android.calculator.ui.theme.Orange
 import kotlin.math.absoluteValue
-import kotlin.text.StringBuilder
 
 /**
  * @author : yinshengpan
@@ -32,13 +34,38 @@ class CalculatorViewModel : ViewModel() {
 
     private var mOperator = ""
 
-    fun getKeyData(): Array<Array<String>> {
+    fun getKeyData(): Array<Array<Pair<String, Color>>> {
         return arrayOf(
-            arrayOf("AC", "±", "π", "÷"),
-            arrayOf("7", "8", "9", "×"),
-            arrayOf("4", "5", "6", "−"),
-            arrayOf("1", "2", "3", "+"),
-            arrayOf("0", ".", "=", "⬅︎"),
+            arrayOf(
+                "AC" to LightGray,
+                "⬅︎" to LightGray,
+                "+/-" to LightGray,
+                "÷" to Orange
+            ),
+            arrayOf(
+                "7" to DarkGray,
+                "8" to DarkGray,
+                "9" to DarkGray,
+                "×" to Orange
+            ),
+            arrayOf(
+                "4" to DarkGray,
+                "5" to DarkGray,
+                "6" to DarkGray,
+                "−" to Orange
+            ),
+            arrayOf(
+                "1" to DarkGray,
+                "2" to DarkGray,
+                "3" to DarkGray,
+                "+" to Orange
+            ),
+            arrayOf(
+                "0" to DarkGray,
+                "." to DarkGray,
+                "π" to DarkGray,
+                "=" to Orange
+            ),
         )
     }
 
@@ -47,7 +74,7 @@ class CalculatorViewModel : ViewModel() {
             "AC" -> {
                 reset()
             }
-            "±" -> {
+            "+/-" -> {
                 if (mCalculateResult) {
                     reset()
                 }
@@ -136,7 +163,7 @@ class CalculatorViewModel : ViewModel() {
                     )
                 }
             }
-            "+", "-", "×", "÷" -> {
+            "+", "−", "×", "÷" -> {
                 if (mFirstNumberBuilder.isEmpty()) {
                     return
                 }
