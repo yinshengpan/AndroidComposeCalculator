@@ -156,9 +156,12 @@ class CalculatorViewModel : ViewModel() {
                 } else {
                     val isFirstDecimal = mFirstNumberBuilder.contains(".")
                     val isSecondDecimal = mSecondNumberBuilder.contains(".")
+                    val isReserveDecimal = mOperator == "÷" &&
+                            mFirstNumberBuilder.toString()
+                                .toDouble() % mSecondNumberBuilder.toString().toDouble() != 0.0
                     val result: Double = calculate()
                     _displayContent.postValue(
-                        if (isFirstDecimal || isSecondDecimal) result.toString()
+                        if (isFirstDecimal || isSecondDecimal || isReserveDecimal) result.toString()
                         else result.toLong().toString()
                     )
                 }
@@ -172,9 +175,12 @@ class CalculatorViewModel : ViewModel() {
                     if (mSecondNumberBuilder.isNotEmpty()) {
                         val isFirstDecimal = mFirstNumberBuilder.contains(".")
                         val isSecondDecimal = mSecondNumberBuilder.contains(".")
+                        val isReserveDecimal = mOperator == "÷" &&
+                                mFirstNumberBuilder.toString()
+                                    .toDouble() % mSecondNumberBuilder.toString().toDouble() != 0.0
                         val result = calculate()
                         _displayContent.postValue(
-                            if (isFirstDecimal || isSecondDecimal) result.toString()
+                            if (isFirstDecimal || isSecondDecimal || isReserveDecimal) result.toString()
                             else result.toLong().toString()
                         )
                     }
@@ -224,8 +230,9 @@ class CalculatorViewModel : ViewModel() {
         val isSecondDecimal = mSecondNumberBuilder.contains(".")
         mFirstNegativeNumber = result < 0
         mFirstNumberBuilder.delete(0, mFirstNumberBuilder.length)
+        val isReserveDecimal = firstN % secondN != 0.0 && mOperator == "÷"
         mFirstNumberBuilder.append(
-            if (isSecondDecimal || isFirstDecimal) result.absoluteValue.toString()
+            if (isSecondDecimal || isFirstDecimal || isReserveDecimal) result.absoluteValue.toString()
             else result.absoluteValue.toLong().toString()
         )
         mOperator = ""
